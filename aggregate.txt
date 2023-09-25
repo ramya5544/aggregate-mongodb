@@ -1,0 +1,152 @@
+use item;
+switched to db item
+db.product.insertMany([{"name":"bangle","price":20,"stock":30},{"name":"bindi","price":40,"stock":30},{"name":"eyetex","price":10,"stock":12}]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("6511b504a6897a86cba9bd84"),
+    '1': ObjectId("6511b504a6897a86cba9bd85"),
+    '2': ObjectId("6511b504a6897a86cba9bd86")
+  }
+}
+db.product.find();
+{
+  _id: ObjectId("6511b504a6897a86cba9bd84"),
+  name: 'bangle',
+  price: 20,
+  stock: 30
+}
+{
+  _id: ObjectId("6511b504a6897a86cba9bd85"),
+  name: 'bindi',
+  price: 40,
+  stock: 30
+}
+{
+  _id: ObjectId("6511b504a6897a86cba9bd86"),
+  name: 'eyetex',
+  price: 10,
+  stock: 12
+}
+db.product.aggregate([{$match:{"price":{$gt:10}}}]);
+{
+  _id: ObjectId("6511b504a6897a86cba9bd84"),
+  name: 'bangle',
+  price: 20,
+  stock: 30
+}
+{
+  _id: ObjectId("6511b504a6897a86cba9bd85"),
+  name: 'bindi',
+  price: 40,
+  stock: 30
+}
+db.product.aggregate([{$group:{_id:'$price',total_stock:{$sum:'$stock'}}}]);
+{
+  _id: 20,
+  total_stock: 30
+}
+{
+  _id: 40,
+  total_stock: 30
+}
+{
+  _id: 10,
+  total_stock: 12
+}
+db.product.aggregate([{$group:{_id:'$price',total_stock:{$sum:'$stock'}}},{$sort:{_id:1}}]);
+{
+  _id: 10,
+  total_stock: 12
+}
+{
+  _id: 20,
+  total_stock: 30
+}
+{
+  _id: 40,
+  total_stock: 30
+}
+db.product.aggregate([{$group:{_id:'$price',total_stock:{$sum:'$stock'}}},{$sort:{_id:-1}}]);
+{
+  _id: 40,
+  total_stock: 30
+}
+{
+  _id: 20,
+  total_stock: 30
+}
+{
+  _id: 10,
+  total_stock: 12
+}
+db.product.aggregate([{$group:{_id:'$price',total_stock:{$sum:'$stock'}}},{$sort:{_id:-1}},{$limit:2}]);
+{
+  _id: 40,
+  total_stock: 30
+}
+{
+  _id: 20,
+  total_stock: 30
+}
+db.product.aggregate([{$group:{_id:'$price',total_stock:{$sum:'$stock'}}},{$sort:{_id:-1}},{$skip:1},{$limit:2}]);
+{
+  _id: 20,
+  total_stock: 30
+}
+{
+  _id: 10,
+  total_stock: 12
+}
+db.product.find({},{name:1,price:1});
+{
+  _id: ObjectId("6511b504a6897a86cba9bd84"),
+  name: 'bangle',
+  price: 20
+}
+{
+  _id: ObjectId("6511b504a6897a86cba9bd85"),
+  name: 'bindi',
+  price: 40
+}
+{
+  _id: ObjectId("6511b504a6897a86cba9bd86"),
+  name: 'eyetex',
+  price: 10
+}
+db.product.aggregate([{$project:{_id:1,name:1,stock:1}}]);
+{
+  _id: ObjectId("6511b504a6897a86cba9bd84"),
+  name: 'bangle',
+  stock: 30
+}
+{
+  _id: ObjectId("6511b504a6897a86cba9bd85"),
+  name: 'bindi',
+  stock: 30
+}
+{
+  _id: ObjectId("6511b504a6897a86cba9bd86"),
+  name: 'eyetex',
+  stock: 12
+}
+db.product.aggregate([{$group:{_id:'$price',total_stock:{$sum:'$stock'}}},{$sort:{_id:-1}},{$limit:2},{$project:{_id:1,total_stock:0}}]);
+{
+  _id: 40
+}
+{
+  _id: 20
+}
+db.product.find();
+{
+  _id: ObjectId("6511b504a6897a86cba9bd84"),
+  name: 'bangle',
+  price: 20,
+  stock: 30
+}
+{
+  _id: ObjectId("6511b504a6897a86cba9bd85"),
+  name: 'bindi',
+  price: 40,
+  stock: 30
+}
